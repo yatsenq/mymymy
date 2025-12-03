@@ -1,0 +1,95 @@
+﻿<Window x:Class="StayFit.WPF.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="StayFit - Головна" 
+        Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="White">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Бічне меню -->
+        <Border Grid.Column="0" Background="#2E7D32">
+            <StackPanel>
+                <!-- Логотип -->
+                <Border Height="120" Background="#388E3C">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="StayFit" 
+                                   FontSize="28" 
+                                   FontWeight="Bold"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Здоровий спосіб життя" 
+                                   FontSize="11"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Меню -->
+                <StackPanel Margin="0,20,0,0">
+                    <Button x:Name="BtnDiary"
+                            Content="📊 Щоденник"
+                            Click="BtnDiary_Click"
+                            Height="50"
+                            Background="Transparent"
+                            Foreground="White"
+                            FontSize="16"
+                            BorderThickness="0"
+                            HorizontalContentAlignment="Left"
+                            Padding="20,0"
+                            Cursor="Hand"/>
+                    
+                    <Button x:Name="BtnProgress"
+                            Content="📈 Прогрес"
+                            Click="BtnProgress_Click"
+                            Height="50"
+                            Background="Transparent"
+                            Foreground="White"
+                            FontSize="16"
+                            BorderThickness="0"
+                            HorizontalContentAlignment="Left"
+                            Padding="20,0"
+                            Cursor="Hand"/>
+                    
+                    <Button x:Name="BtnSettings"
+                            Content="⚙️ Налаштування"
+                            Click="BtnSettings_Click"
+                            Height="50"
+                            Background="Transparent"
+                            Foreground="White"
+                            FontSize="16"
+                            BorderThickness="0"
+                            HorizontalContentAlignment="Left"
+                            Padding="20,0"
+                            Cursor="Hand"/>
+
+                    <Separator Margin="10,10" Background="White" Opacity="0.3"/>
+
+                    <Button x:Name="BtnLogout"
+                            Content="🚪 Вихід"
+                            Click="BtnLogout_Click"
+                            Height="50"
+                            Background="Transparent"
+                            Foreground="White"
+                            FontSize="16"
+                            BorderThickness="0"
+                            HorizontalContentAlignment="Left"
+                            Padding="20,0"
+                            Cursor="Hand"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Контейнер для контенту -->
+        <Frame x:Name="MainFrame" 
+               Grid.Column="1" 
+               NavigationUIVisibility="Hidden"
+               Background="White"/>
+    </Grid>
+</Window>

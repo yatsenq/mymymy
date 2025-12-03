@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/stylecop.json",
+  "settings": {
+    "documentationRules": {
+      "companyName": "Muxluk/StayFit",
+      "copyrightText": "Copyright (c) {companyName}. All rights reserved."
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "insideNamespace"
+    },
+    "indentation": {
+      "indentationSize": 4,
+      "tabSize": 4,
+      "useTabs": false
+    },
+    "layoutRules": {
+      "newlineAtEndOfFile": "require"
+    }
+  }
+}

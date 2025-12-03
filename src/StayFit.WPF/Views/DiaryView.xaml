@@ -1,0 +1,309 @@
+<UserControl x:Class="StayFit.WPF.Views.DiaryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="clr-namespace:StayFit.UI.ViewModels;assembly=UI"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewmodels:DiaryViewModel}"
+             d:DesignHeight="700" d:DesignWidth="900"
+             Background="White">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок -->
+            <TextBlock Grid.Row="0" 
+                       Text="Щоденник харчування" 
+                       FontSize="28" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,20"
+                       Foreground="#2C3E50"/>
+
+            <!-- Форма додавання -->
+            <Border Grid.Row="1" 
+                    Background="#F8F9FA" 
+                    CornerRadius="8" 
+                    Padding="20"
+                    Margin="0,0,0,20">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+                </Border.Effect>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Дата -->
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock Text="Дата" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <DatePicker SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}"
+                                    Height="40" FontSize="14"/>
+                    </StackPanel>
+
+                    <!-- Продукт -->
+                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,10,0">
+                        <TextBlock Text="Продукт" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="CmbProduct"
+                                  ItemsSource="{Binding AvailableProducts}"
+                                  SelectedValue="{Binding SelectedProductId, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="ProductId"
+                                  DisplayMemberPath="Name"
+                                  Height="40" FontSize="14"
+                                  IsEditable="True"/>
+                    </StackPanel>
+
+                    <!-- Прийом їжі -->
+                    <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,10,0">
+                        <TextBlock Text="Прийом їжі" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="CmbMealType"
+                                  ItemsSource="{Binding MealTypes}"
+                                  SelectedValue="{Binding SelectedMealTypeId, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="MealTypeId"
+                                  DisplayMemberPath="Name"
+                                  Height="40" FontSize="14"/>
+                    </StackPanel>
+
+                    <!-- Вага (грами) -->
+                    <StackPanel Grid.Row="0" Grid.Column="3" Margin="0,0,10,0">
+                        <TextBlock Text="Вага (г)" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding WeightGrams, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="40" FontSize="14"
+                                 VerticalContentAlignment="Center"
+                                 Padding="10"/>
+                    </StackPanel>
+
+                    <!-- Кнопка Додати -->
+                    <Button Grid.Row="0" Grid.Column="4"
+                            Content="ДОДАТИ"
+                            Command="{Binding AddEntryCommand}"
+                            Background="#4CAF50"
+                            Foreground="White"
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            Height="40"
+                            Width="120"
+                            Margin="0,25,0,0"
+                            BorderThickness="0"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    CornerRadius="6"
+                                                    Padding="15,0">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#45A049"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Dashboard калорій і макросів -->
+            <Grid Grid.Row="2" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Калорії -->
+                <Border Grid.Column="0" Background="#E3F2FD" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="Калорії" FontSize="14" Foreground="#1976D2" FontWeight="SemiBold"/>
+                        <TextBlock FontSize="24" FontWeight="Bold" Foreground="#0D47A1" Margin="0,5,0,0">
+                            <Run Text="{Binding TotalCalories, Mode=OneWay, StringFormat={}{0:F0}}"/>
+                            <Run Text="/" FontSize="18" Foreground="#666"/>
+                            <Run Text="{Binding TargetCalories, Mode=OneWay, StringFormat={}{0:F0}}" FontSize="18" Foreground="#666"/>
+                        </TextBlock>
+                        <TextBlock Text="ккал" FontSize="12" Foreground="#666"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Білки -->
+                <Border Grid.Column="1" Background="#F3E5F5" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="Білки" FontSize="14" Foreground="#7B1FA2" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding TotalProtein, Mode=OneWay, StringFormat={}{0:F1} г}" 
+                                   FontSize="24" FontWeight="Bold" Foreground="#4A148C" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Жири -->
+                <Border Grid.Column="2" Background="#FFF3E0" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="Жири" FontSize="14" Foreground="#F57C00" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding TotalFat, Mode=OneWay, StringFormat={}{0:F1} г}" 
+                                   FontSize="24" FontWeight="Bold" Foreground="#E65100" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Вуглеводи -->
+                <Border Grid.Column="3" Background="#E8F5E9" CornerRadius="8" Padding="15">
+                    <StackPanel>
+                        <TextBlock Text="Вуглеводи" FontSize="14" Foreground="#388E3C" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding TotalCarbs, Mode=OneWay, StringFormat={}{0:F1} г}" 
+                                   FontSize="24" FontWeight="Bold" Foreground="#1B5E20" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Таблиця записів -->
+            <Border Grid.Row="3" 
+                    Background="White" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1"
+                    CornerRadius="8">
+                <DataGrid ItemsSource="{Binding Entries}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          BorderThickness="0"
+                          Background="White"
+                          RowBackground="White"
+                          AlternatingRowBackground="#F8F9FA">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Продукт" Binding="{Binding ProductName}" Width="2*" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="Прийом їжі" Binding="{Binding MealTypeName}" Width="*" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="Вага (г)" Binding="{Binding WeightGrams, StringFormat={}{0:F0}}" Width="100" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="Калорії" Binding="{Binding Calories, StringFormat={}{0:F0}}" Width="100" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Foreground" Value="#1976D2"/>
+                                    <Setter Property="TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="Білки (г)" Binding="{Binding Protein, StringFormat={}{0:F1}}" Width="100" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="Жири (г)" Binding="{Binding Fat, StringFormat={}{0:F1}}" Width="100" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="Вуглеводи (г)" Binding="{Binding Carbs, StringFormat={}{0:F1}}" Width="120" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Padding" Value="10,5"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTemplateColumn Header="" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Видалити"
+                                            Command="{Binding DataContext.DeleteEntryCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}"
+                                            Background="#F44336"
+                                            Foreground="White"
+                                            FontSize="12"
+                                            Height="30"
+                                            Margin="5"
+                                            BorderThickness="0"
+                                            Cursor="Hand">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border Background="{TemplateBinding Background}"
+                                                                    CornerRadius="4"
+                                                                    Padding="10,5">
+                                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                                VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#D32F2F"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

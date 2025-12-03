@@ -1,0 +1,36 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Primary Colors -->
+    <SolidColorBrush x:Key="PrimaryColor" Color="#4CAF50"/>
+    <SolidColorBrush x:Key="PrimaryDarkColor" Color="#388E3C"/>
+    <SolidColorBrush x:Key="PrimaryLightColor" Color="#81C784"/>
+
+    <!-- Accent Colors -->
+    <SolidColorBrush x:Key="AccentColor" Color="#8BC34A"/>
+    <SolidColorBrush x:Key="AccentDarkColor" Color="#689F38"/>
+    <SolidColorBrush x:Key="AccentLightColor" Color="#AED581"/>
+
+    <!-- Background Colors -->
+    <SolidColorBrush x:Key="BackgroundColor" Color="#F5F5F5"/>
+    <SolidColorBrush x:Key="SurfaceColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="CardColor" Color="#FFFFFF"/>
+
+    <!-- Text Colors -->
+    <SolidColorBrush x:Key="TextPrimaryColor" Color="#212121"/>
+    <SolidColorBrush x:Key="TextSecondaryColor" Color="#757575"/>
+    <SolidColorBrush x:Key="TextDisabledColor" Color="#BDBDBD"/>
+
+    <!-- Semantic Colors -->
+    <SolidColorBrush x:Key="SuccessColor" Color="#4CAF50"/>
+    <SolidColorBrush x:Key="ErrorColor" Color="#F44336"/>
+    <SolidColorBrush x:Key="WarningColor" Color="#FF9800"/>
+    <SolidColorBrush x:Key="InfoColor" Color="#2196F3"/>
+
+    <!-- Nutrition Colors -->
+    <SolidColorBrush x:Key="ProteinColor" Color="#FF8A80"/>
+    <SolidColorBrush x:Key="FatColor" Color="#FFD54F"/>
+    <SolidColorBrush x:Key="CarbsColor" Color="#81C784"/>
+    <SolidColorBrush x:Key="CaloriesColor" Color="#FF5722"/>
+
+</ResourceDictionary>

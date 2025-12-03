@@ -1,0 +1,71 @@
+# top-most: вказує, що це найвищий файл конфігурації і не слід шукати далі
+root = true
+
+# =====================================================================
+# Core Editor Settings (форматування файлів)
+# =====================================================================
+
+[*]
+# Використовувати пробіли замість табуляції
+indent_style = space
+# Розмір відступу та табуляції - 4 пробіли
+indent_size = 4
+tab_width = 4
+# Вимагати новий рядок наприкінці файлу
+insert_final_newline = true
+# Кодування файлів
+charset = utf-8
+# Обрізати зайві пробіли в кінці рядка
+trim_trailing_whitespace = true
+
+
+# =====================================================================
+# C# Coding Conventions (правила C#)
+# =====================================================================
+
+[*.cs]
+
+# Language Conventions (як писати код)
+
+# Використовувати 'var' для локальних змінних, коли тип очевидний (наприклад, new MyObject())
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = false:suggestion
+
+# Використовувати "this." лише за необхідності (наприклад, для усунення неоднозначності)
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+
+# Використовувати фігурні дужки, навіть якщо вони необов'язкові (для читабельності)
+csharp_style_brace_preference = new_line:warning
+csharp_style_parentheses_in_invocation_style = omit_when_possible:suggestion
+csharp_style_parentheses_in_new_style = omit_when_possible:suggestion
+csharp_prefer_simple_using_statement = true:suggestion
+
+# Порядок using-директив: Системні/сторонні/проєктні, і завжди поза простором імен
+csharp_using_directive_placement = outside_namespace:warning
+dotnet_separate_import_directive_groups = true:suggestion
+
+# Вмикаємо всі правила StyleCop Analyzers як попередження (SAxxxx)
+# Примітка: Налаштування, вказані в stylecop.json, та специфічні налаштування тут 
+# мають пріоритет.
+dotnet_analyzer_diagnostic.severity = warning
+# Вимкнути SA1200 - file-scoped namespaces (C# 10+) не підтримуються StyleCop
+dotnet_diagnostic.SA1200.severity = none
+# Вимкнути SA1636 - copyright header format issues
+dotnet_diagnostic.SA1636.severity = none
+# Вимкнути суперечливі правила форматування для records
+dotnet_diagnostic.SA1009.severity = none
+dotnet_diagnostic.SA1024.severity = none
+
+# =====================================================================
+# StyleCop Specific Overrides (SA)
+# =====================================================================
+
+# Вимкнути SA1600 (Missing XML comment for publicly visible type or member) 
+# для тестових класів (якщо ви їх створите)
+[*{.Tests,.tests}/**/*.cs]
+SA1600 = none
+SA1601 = none

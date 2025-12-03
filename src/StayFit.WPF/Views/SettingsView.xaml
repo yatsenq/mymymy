@@ -1,0 +1,310 @@
+<UserControl x:Class="StayFit.WPF.Views.SettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        d:DesignHeight="600"
+        d:DesignWidth="500"
+        Background="#F5F5F5">
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок -->
+            <TextBlock Grid.Row="0" 
+                       Text="Налаштування профілю"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="#2E7D32"
+                       Margin="0,0,0,30"/>
+
+            <!-- Секція: Фізичні параметри -->
+            <Border Grid.Row="1" 
+                    Background="White" 
+                    CornerRadius="8" 
+                    Padding="20"
+                    Margin="0,0,0,20">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+                </Border.Effect>
+                
+                <StackPanel>
+                    <TextBlock Text="Фізичні параметри" 
+                               FontSize="18" 
+                               FontWeight="SemiBold"
+                               Foreground="#333"
+                               Margin="0,0,0,15"/>
+
+                    <!-- Зріст -->
+                    <StackPanel Margin="0,0,0,15">
+                        <TextBlock Text="Зріст (см)" 
+                                   FontSize="14" 
+                                   Foreground="#666"
+                                   Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtHeight"
+                                 Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}"
+                                 FontSize="14"
+                                 Padding="10"
+                                 Height="40"/>
+                    </StackPanel>
+
+                    <!-- Поточна вага -->
+                    <StackPanel Margin="0,0,0,15">
+                        <TextBlock Text="Поточна вага (кг)" 
+                                   FontSize="14" 
+                                   Foreground="#666"
+                                   Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtWeight"
+                                 Text="{Binding Weight, UpdateSourceTrigger=PropertyChanged}"
+                                 FontSize="14"
+                                 Padding="10"
+                                 Height="40"/>
+                    </StackPanel>
+
+                    <!-- Цільова вага -->
+                    <StackPanel Margin="0,0,0,0">
+                        <TextBlock Text="Цільова вага (кг)" 
+                                   FontSize="14" 
+                                   Foreground="#666"
+                                   Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtTargetWeight"
+                                 Text="{Binding TargetWeight, UpdateSourceTrigger=PropertyChanged}"
+                                 FontSize="14"
+                                 Padding="10"
+                                 Height="40"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Секція: Рівень активності -->
+            <Border Grid.Row="2" 
+                    Background="White" 
+                    CornerRadius="8" 
+                    Padding="20"
+                    Margin="0,0,0,20">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+                </Border.Effect>
+                
+                <StackPanel>
+                    <TextBlock Text="Рівень активності" 
+                               FontSize="18" 
+                               FontWeight="SemiBold"
+                               Foreground="#333"
+                               Margin="0,0,0,15"/>
+
+                    <ComboBox x:Name="CmbActivityLevel"
+                              SelectedValue="{Binding ActivityLevel, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag"
+                              FontSize="14"
+                              Height="40"
+                              Padding="10">
+                        <ComboBoxItem Content="Сидячий спосіб життя" Tag="SEDENTARY"/>
+                        <ComboBoxItem Content="Легка активність (1-3 рази/тиждень)" Tag="LIGHTLY_ACTIVE"/>
+                        <ComboBoxItem Content="Помірна активність (3-5 разів/тиждень)" Tag="MODERATELY_ACTIVE"/>
+                        <ComboBoxItem Content="Висока активність (6-7 разів/тиждень)" Tag="VERY_ACTIVE"/>
+                        <ComboBoxItem Content="Дуже висока активність (2 рази/день)" Tag="EXTRA_ACTIVE"/>
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+
+            <!-- Секція: Розраховані метрики (Readonly) -->
+            <Border Grid.Row="3" 
+                    Background="#E8F5E9" 
+                    CornerRadius="8" 
+                    Padding="20"
+                    Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="Ваші показники" 
+                               FontSize="18" 
+                               FontWeight="SemiBold"
+                               Foreground="#2E7D32"
+                               Margin="0,0,0,15"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- BMI -->
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="BMI" 
+                                       FontSize="12" 
+                                       Foreground="#666"
+                                       Margin="0,0,0,5"/>
+                            <TextBlock x:Name="TxtBmi"
+                                       Text="{Binding Bmi, StringFormat={}{0:F1}}"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Foreground="#2E7D32"/>
+                        </StackPanel>
+
+                        <!-- BMR -->
+                        <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                            <TextBlock Text="BMR (ккал)" 
+                                       FontSize="12" 
+                                       Foreground="#666"
+                                       Margin="0,0,0,5"/>
+                            <TextBlock x:Name="TxtBmr"
+                                       Text="{Binding Bmr, StringFormat={}{0:F0}}"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Foreground="#2E7D32"/>
+                        </StackPanel>
+
+                        <!-- TDEE -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="TDEE (ккал)" 
+                                       FontSize="12" 
+                                       Foreground="#666"
+                                       Margin="0,0,0,5"/>
+                            <TextBlock x:Name="TxtTdee"
+                                       Text="{Binding Tdee, StringFormat={}{0:F0}}"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Foreground="#2E7D32"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="* BMI - Індекс маси тіла | BMR - Базовий метаболізм | TDEE - Денна норма калорій"
+                               FontSize="10"
+                               Foreground="#999"
+                               TextWrapping="Wrap"
+                               Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Error та Success Messages -->
+            <StackPanel Grid.Row="4" Margin="0,0,0,20">
+                <TextBlock x:Name="TxtError"
+                           Text="{Binding ErrorMessage}"
+                           Foreground="Red"
+                           FontSize="14"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,10"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+                
+                <TextBlock x:Name="TxtSuccess"
+                           Text="{Binding SuccessMessage}"
+                           Foreground="Green"
+                           FontSize="14"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,10"
+                           Visibility="{Binding SuccessMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+            </StackPanel>
+            <!-- Секція: Рекомендації -->
+            <Border Grid.Row="4" 
+                    Background="#FFF3E0" 
+                    CornerRadius="8" 
+                    Padding="20"
+                    Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="Рекомендації" 
+                              FontSize="18" 
+                              FontWeight="SemiBold"
+                              Foreground="#E65100"
+                              Margin="0,0,0,15"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- BMI Статус -->
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="Статус BMI" 
+                                      FontSize="12" 
+                                      Foreground="#666"
+                                      Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding BmiStatus}"
+                                      FontSize="16"
+                                      FontWeight="Bold"
+                                      Foreground="#E65100"
+                                      TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <!-- Ціль -->
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Ваша ціль" 
+                                      FontSize="12" 
+                                      Foreground="#666"
+                                      Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding GoalStatus}"
+                                      FontSize="16"
+                                      FontWeight="Bold"
+                                      Foreground="#E65100"
+                                      TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Background="#FFE0B2" 
+                            CornerRadius="4" 
+                            Padding="15"
+                            Margin="0,15,0,0">
+                        <StackPanel>
+                            <TextBlock Text="💡 Рекомендована денна норма калорій:" 
+                                      FontSize="14" 
+                                      Foreground="#E65100"
+                                      Margin="0,0,0,5"/>
+                            <TextBlock FontSize="24"
+                                      FontWeight="Bold"
+                                      Foreground="#E65100">
+                                <Run Text="{Binding RecommendedCalories, StringFormat={}{0:F0}, Mode=OneWay}"/>
+                                <Run Text=" ккал/день" FontSize="16"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+            <!-- Кнопка Зберегти -->
+            <Button Grid.Row="5"
+                    x:Name="BtnSave"
+                    Content="ЗБЕРЕГТИ"
+                    Command="{Binding UpdateProfileCommand}" Click="BtnSave_Click"
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Height="50"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Cursor="Hand">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#4CAF50"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="8"
+                                            Padding="20,0">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#45A049"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#388E3C"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
