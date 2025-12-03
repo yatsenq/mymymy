@@ -3,6 +3,8 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using StayFit.UI.ViewModels;
 using StayFit.UI.Services;
+using MediatR;
+using StayFit.DAL.Exceptions;
 
 namespace StayFit.WPF.Views
 {
@@ -79,7 +81,10 @@ namespace StayFit.WPF.Views
                     );
 
                     var app = Application.Current as App;
-                    var mediator = app?.Services?.GetService<MediatR.IMediator>();
+
+                    // Створюємо окремий scope, щоб коректно витягнути scoped-сервіси (DbContext, IMediator)
+                    using var scope = app?.Services?.CreateScope();
+                    var mediator = scope?.ServiceProvider.GetService<IMediator>();
 
                     if (mediator != null)
                     {
@@ -104,9 +109,13 @@ namespace StayFit.WPF.Views
                         _viewModel.ErrorMessage = "Невірний email або пароль";
                     }
                 }
-                catch (Exception ex)
+                catch (AuthenticationFailedException)
                 {
-                    _viewModel.ErrorMessage = $"Помилка: {ex.Message}";
+                    _viewModel.ErrorMessage = "Невірний email або пароль";
+                }
+                catch (Exception)
+                {
+                    _viewModel.ErrorMessage = "Сталася помилка під час входу. Спробуйте пізніше.";
                 }
             }
             catch (Exception ex)
