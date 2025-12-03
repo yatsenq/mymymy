@@ -9,10 +9,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddViewModels(this IServiceCollection services)
     {
-        services.AddSingleton<LoginViewModel>();
-        services.AddSingleton<DiaryViewModel>();
-        services.AddSingleton<ProgressViewModel>();
-        services.AddSingleton<SettingsViewModel>();
+        services.AddTransient<LoginViewModel>();
+        services.AddTransient<DiaryViewModel>();
+        services.AddTransient<ProgressViewModel>();
+        services.AddTransient<SettingsViewModel>();
 
         return services;
     }

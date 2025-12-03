@@ -3,11 +3,14 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using StayFit.UI.ViewModels;
 using StayFit.UI.Services;
+using MediatR;
+using StayFit.DAL.Exceptions;
 
 namespace StayFit.WPF.Views
 {
     public partial class LoginView : Window
     {
+        private readonly IServiceScope? _scope;
         private readonly LoginViewModel? _viewModel;
 
         public LoginView()
@@ -19,7 +22,8 @@ namespace StayFit.WPF.Views
                 var app = Application.Current as App;
                 if (app?.Services != null)
                 {
-                    _viewModel = app.Services.GetService<LoginViewModel>();
+                    _scope = app.Services.CreateScope();
+                    _viewModel = _scope.ServiceProvider.GetService<LoginViewModel>();
                     DataContext = _viewModel;
                 }
             }
@@ -79,7 +83,18 @@ namespace StayFit.WPF.Views
                     );
 
                     var app = Application.Current as App;
-                    var mediator = app?.Services?.GetService<MediatR.IMediator>();
+
+                    // Використовуємо окремий scope, щоб коректно витягнути scoped-сервіси (DbContext, IMediator)
+                    IServiceScope? localScope = null;
+                    IServiceProvider? loginProvider = _scope?.ServiceProvider;
+
+                    if (loginProvider == null)
+                    {
+                        localScope = app?.Services?.CreateScope();
+                        loginProvider = localScope?.ServiceProvider;
+                    }
+
+                    var mediator = loginProvider?.GetService<IMediator>();
 
                     if (mediator != null)
                     {
@@ -88,14 +103,14 @@ namespace StayFit.WPF.Views
                         if (response != null)
                         {
                             // ЗБЕРЕГТИ USERID В СЕРВІС
-                            var currentUserService = app?.Services?.GetService<ICurrentUserService>();
+                            var currentUserService = loginProvider?.GetService<ICurrentUserService>();
                             if (currentUserService != null)
                             {
                                 currentUserService.UserId = response.userId;
                                 currentUserService.Email = _viewModel.Email;
                             }
 
-                            var mainWindow = app.Services.GetService<MainWindow>();
+                            var mainWindow = app?.Services?.GetService<MainWindow>();
                             mainWindow?.Show();
                             this.Close();
                             return;
@@ -103,10 +118,18 @@ namespace StayFit.WPF.Views
 
                         _viewModel.ErrorMessage = "Невірний email або пароль";
                     }
+                    finally
+                    {
+                        localScope?.Dispose();
+                    }
                 }
-                catch (Exception ex)
+                catch (AuthenticationFailedException)
                 {
-                    _viewModel.ErrorMessage = $"Помилка: {ex.Message}";
+                    _viewModel.ErrorMessage = "Невірний email або пароль";
+                }
+                catch (Exception)
+                {
+                    _viewModel.ErrorMessage = "Сталася помилка під час входу. Спробуйте пізніше.";
                 }
             }
             catch (Exception ex)
@@ -131,6 +154,12 @@ namespace StayFit.WPF.Views
                 registerWindow.Show();
                 this.Close();
             }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _scope?.Dispose();
+            base.OnClosed(e);
         }
     }
 }
