@@ -95,6 +95,9 @@ namespace StayFit.WPF.Views
                     }
 
                     var mediator = loginProvider?.GetService<IMediator>();
+                    // Створюємо окремий scope, щоб коректно витягнути scoped-сервіси (DbContext, IMediator)
+                    using var scope = app?.Services?.CreateScope();
+                    var mediator = scope?.ServiceProvider.GetService<IMediator>();
 
                     if (mediator != null)
                     {
@@ -122,6 +125,10 @@ namespace StayFit.WPF.Views
                     {
                         localScope?.Dispose();
                     }
+                }
+                catch (AuthenticationFailedException)
+                {
+                    _viewModel.ErrorMessage = "Невірний email або пароль";
                 }
                 catch (AuthenticationFailedException)
                 {
