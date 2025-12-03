@@ -84,12 +84,9 @@ namespace StayFit.WPF.Views
 
                     var app = Application.Current as App;
 
-                    // Використовуємо окремий scope, щоб коректно витягнути scoped-сервіси (DbContext, IMediator)
-                    IServiceProvider? loginProvider = _scope?.ServiceProvider;
-                    using var scope = loginProvider == null ? app?.Services?.CreateScope() : null;
-                    loginProvider ??= scope?.ServiceProvider;
-
-                    var mediator = loginProvider?.GetService<IMediator>();
+                    // Створюємо окремий scope, щоб коректно витягнути scoped-сервіси (DbContext, IMediator)
+                    using var scope = app?.Services?.CreateScope();
+                    var mediator = scope?.ServiceProvider.GetService<IMediator>();
 
                     if (mediator != null)
                     {
