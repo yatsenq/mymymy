@@ -1,3 +1,7 @@
+// <copyright file="WeightHistoryEntryDto.cs" company="Muxluk/StayFit">
+// Copyright (c) Muxluk/StayFit. All rights reserved.
+// </copyright>
+
 namespace StayFit.BLL.Features.Progress.GetWeightHistory;
 
 /// <summary>
@@ -12,5 +16,3 @@ public record WeightHistoryEntryDto(
     DateTime Date,
     decimal Weight,
     decimal Bmi);
-
-

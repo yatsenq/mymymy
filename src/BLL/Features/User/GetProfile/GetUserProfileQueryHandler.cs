@@ -2,7 +2,6 @@
 // Copyright (c) Muxluk/StayFit. All rights reserved.
 // </copyright>
 
-
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using StayFit.DAL.Interfaces;

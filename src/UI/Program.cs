@@ -2,9 +2,9 @@ using StayFit.UI.Examples;
 
 namespace StayFit.UI;
 
-class Program
+internal sealed class Program
 {
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         var serviceProvider = DependencyInjectionExample.ConfigureServicesForWpf();
         
