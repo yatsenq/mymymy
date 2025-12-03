@@ -2,7 +2,6 @@
 // Copyright (c) Muxluk/StayFit. All rights reserved.
 // </copyright>
 
-
 using MediatR;
 
 namespace StayFit.BLL.Features.User.UpdateProfile;
@@ -24,3 +23,4 @@ public class UpdateUserProfileResult
     public decimal? Bmr { get; set; }
     public decimal? Tdee { get; set; }
 }
+

@@ -213,7 +213,7 @@ namespace StayFit.UI.ViewModels
 
                 Entries.Clear();
 
-                if (summary.Entries != null && summary.Entries.Any())
+                if (summary.Entries is { Count: > 0 })
                 {
                     Console.WriteLine($"[DiaryViewModel] Додаємо {summary.Entries.Count} записів до UI");
                     
@@ -337,7 +337,7 @@ namespace StayFit.UI.ViewModels
             TotalCarbs = Entries.Sum(e => e.Carbs);
         }
 
-        private string GetMealTypeName(int mealTypeId)
+        private static string GetMealTypeName(int mealTypeId)
         {
             return mealTypeId switch
             {
