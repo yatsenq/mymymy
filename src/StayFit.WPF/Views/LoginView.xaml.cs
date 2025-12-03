@@ -10,6 +10,7 @@ namespace StayFit.WPF.Views
 {
     public partial class LoginView : Window
     {
+        private readonly IServiceScope? _scope;
         private readonly LoginViewModel? _viewModel;
 
         public LoginView()
@@ -21,7 +22,8 @@ namespace StayFit.WPF.Views
                 var app = Application.Current as App;
                 if (app?.Services != null)
                 {
-                    _viewModel = app.Services.GetService<LoginViewModel>();
+                    _scope = app.Services.CreateScope();
+                    _viewModel = _scope.ServiceProvider.GetService<LoginViewModel>();
                     DataContext = _viewModel;
                 }
             }
@@ -93,7 +95,7 @@ namespace StayFit.WPF.Views
                         if (response != null)
                         {
                             // ЗБЕРЕГТИ USERID В СЕРВІС
-                            var currentUserService = app?.Services?.GetService<ICurrentUserService>();
+                            var currentUserService = loginProvider?.GetService<ICurrentUserService>();
                             if (currentUserService != null)
                             {
                                 currentUserService.UserId = response.userId;
@@ -140,6 +142,12 @@ namespace StayFit.WPF.Views
                 registerWindow.Show();
                 this.Close();
             }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _scope?.Dispose();
+            base.OnClosed(e);
         }
     }
 }
