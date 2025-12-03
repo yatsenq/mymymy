@@ -84,6 +84,17 @@ namespace StayFit.WPF.Views
 
                     var app = Application.Current as App;
 
+                    // Використовуємо окремий scope, щоб коректно витягнути scoped-сервіси (DbContext, IMediator)
+                    IServiceScope? localScope = null;
+                    IServiceProvider? loginProvider = _scope?.ServiceProvider;
+
+                    if (loginProvider == null)
+                    {
+                        localScope = app?.Services?.CreateScope();
+                        loginProvider = localScope?.ServiceProvider;
+                    }
+
+                    var mediator = loginProvider?.GetService<IMediator>();
                     // Створюємо окремий scope, щоб коректно витягнути scoped-сервіси (DbContext, IMediator)
                     using var scope = app?.Services?.CreateScope();
                     var mediator = scope?.ServiceProvider.GetService<IMediator>();
@@ -102,7 +113,7 @@ namespace StayFit.WPF.Views
                                 currentUserService.Email = _viewModel.Email;
                             }
 
-                            var mainWindow = app.Services.GetService<MainWindow>();
+                            var mainWindow = app?.Services?.GetService<MainWindow>();
                             mainWindow?.Show();
                             this.Close();
                             return;
@@ -110,6 +121,14 @@ namespace StayFit.WPF.Views
 
                         _viewModel.ErrorMessage = "Невірний email або пароль";
                     }
+                    finally
+                    {
+                        localScope?.Dispose();
+                    }
+                }
+                catch (AuthenticationFailedException)
+                {
+                    _viewModel.ErrorMessage = "Невірний email або пароль";
                 }
                 catch (AuthenticationFailedException)
                 {
