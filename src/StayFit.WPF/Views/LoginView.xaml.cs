@@ -94,7 +94,14 @@ namespace StayFit.WPF.Views
                         loginProvider = localScope?.ServiceProvider;
                     }
 
-                    var mediator = loginProvider?.GetService<IMediator>();
+                    if (loginProvider == null)
+                    {
+                        _viewModel.ErrorMessage = "Сервіси недоступні. Спробуйте пізніше.";
+                        localScope?.Dispose();
+                        return;
+                    }
+
+                    var mediator = loginProvider.GetService<IMediator>();
 
                     if (mediator != null)
                     {
